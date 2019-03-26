@@ -3,6 +3,21 @@
 -- Drop Existing Constraints And Tables
 -- -----------------------------------------------------
 
+ALTER TABLE game_platform
+DROP FOREIGN KEY IF EXISTS FK_gp_platformID;
+
+ALTER TABLE game_platform
+DROP FOREIGN KEY IF EXISTS FK_gp_gameID;
+
+ALTER TABLE order_game
+DROP FOREIGN KEY IF EXISTS FK_og_gameID;
+
+ALTER TABLE order_game
+DROP FOREIGN KEY IF EXISTS FK_og_orderid;
+
+ALTER TABLE cOrder
+DROP FOREIGN KEY IF EXISTS FK_cOrder_customerID;
+
 DROP TABLE IF EXISTS platform;
 DROP TABLE IF EXISTS game_platform;
 DROP TABLE IF EXISTS game;
@@ -57,7 +72,8 @@ CREATE TABLE customer(
     customerID INT(11) NOT NULL AUTO_INCREMENT,
     email VARCHAR(255) NOT NULL,
     name VARCHAR(255) NOT NULL,
-    address VARCHAR(255) NOT NULL
+    address VARCHAR(255) NOT NULL,
+    PRIMARY KEY (customerID)
 )ENGINE = InnoDB;
 
 
@@ -66,3 +82,22 @@ CREATE TABLE customer(
 -- Create Constraints
 -- -----------------------------------------------------
 
+ALTER TABLE game_platform
+ADD CONSTRAINT FK_gp_platformID
+FOREIGN KEY (platformID) REFERENCES platform(platformID);
+
+ALTER TABLE game_platform
+ADD CONSTRAINT FK_gp_gameID
+FOREIGN KEY (gameID) REFERENCES game(gameID);
+
+ALTER TABLE order_game
+ADD CONSTRAINT FK_og_gameID
+FOREIGN KEY (gameID) REFERENCES game(gameID);
+
+ALTER TABLE order_game
+ADD CONSTRAINT FK_og_orderid
+FOREIGN KEY (orderID) REFERENCES cOrder(orderID);
+
+ALTER TABLE cOrder
+ADD CONSTRAINT FK_cOrder_customerID
+FOREIGN KEY (customerID) REFERENCES customer(customerID);
