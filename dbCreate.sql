@@ -4,19 +4,19 @@
 -- -----------------------------------------------------
 
 ALTER TABLE game_platform
-DROP FOREIGN KEY IF EXISTS FK_gp_platformID;
+DROP FOREIGN KEY FK_gp_platformID;
 
 ALTER TABLE game_platform
-DROP FOREIGN KEY IF EXISTS FK_gp_gameID;
+DROP FOREIGN KEY FK_gp_gameID;
 
 ALTER TABLE order_game
-DROP FOREIGN KEY IF EXISTS FK_og_gameID;
+DROP FOREIGN KEY FK_og_gameID;
 
 ALTER TABLE order_game
-DROP FOREIGN KEY IF EXISTS FK_og_orderid;
+DROP FOREIGN KEY FK_og_orderid;
 
 ALTER TABLE cOrder
-DROP FOREIGN KEY IF EXISTS FK_cOrder_customerID;
+DROP FOREIGN KEY FK_cOrder_customerID;
 
 DROP TABLE IF EXISTS platform;
 DROP TABLE IF EXISTS game_platform;
