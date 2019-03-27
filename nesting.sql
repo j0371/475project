@@ -1,8 +1,7 @@
-select game.name Name
-from game
-where game.gameID = (
-  select game_platform.gameID
-  from game_platform
-  natural join platform
-  where platform.name = "Linux"
+select platformID
+from game_platform
+where gameID = (
+  select gameID
+  from game
+  where gameID = 1
 );
