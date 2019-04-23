@@ -1,9 +1,9 @@
-<?php 
-	require_once("session.php"); 
+<?php
+	require_once("session.php");
 	require_once("included_functions.php");
 	require_once("database.php");
 
-	new_header("Online Game Store"); 
+	new_header("Online Game Store");
 	$mysqli = Database::dbConnect();
 	$mysqli -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
@@ -15,7 +15,7 @@
 
 	$stmt = $mysqli->prepare($query);
 	$stmt->execute();
-				  
+
 	if ($stmt) {
 		echo "<div class='row'>";
 		echo "<center>";
@@ -43,8 +43,8 @@
             }else{
                 echo "<td>N/A</td>";
             }
-            echo "<td><a href=#>Edit</a></td>";
-            echo "<td><a href=#>Delete</a></td>";
+            echo "<td><a href=>Edit</a></td>";
+            echo "<td><a href='gameDelete.php?id=".urlencode($row["gameID"])."'>Delete</a></td>";
 
             echo "</tr>";
         }
@@ -55,8 +55,8 @@
 		echo "</center>";
 		echo "</div>";
     }
-    
+
     echo "<br /><p>&laquo:<a href='home.php'>Back to Main Page</a>";
-	
+
 	Database::dbDisconnect();
  ?>
