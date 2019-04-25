@@ -1,5 +1,5 @@
-<?php 
-	require_once("session.php"); 
+<?php
+	require_once("session.php");
 	require_once("included_functions.php");
     require_once("database.php");
 
@@ -7,7 +7,7 @@
         $_SESSION['Email'] = $_POST['Email'];
     }
 
-	new_header("Online Game Store"); 
+	new_header("Online Game Store");
 	$mysqli = Database::dbConnect();
 	$mysqli -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
@@ -18,11 +18,11 @@
     $query0 = "SELECT name FROM customer WHERE email=?";
     $stmt0 = $mysqli->prepare($query0);
     $stmt0->execute([$_SESSION['Email']]);
-    
+
     if($stmt0->rowCount() !== 0){
 
         $accName = $stmt0->fetch(PDO::FETCH_ASSOC)['name'];
-    
+
         $query1 = "SELECT * FROM customer JOIN cOrder USING (CustomerID) JOIN order_game USING (orderID) JOIN game USING (gameID) WHERE email=? ORDER BY game.name ASC";
 
         $stmt1 = $mysqli->prepare($query1);
@@ -33,8 +33,8 @@
         echo "<h2>Game Purchases for ".$accName."</h2>";
 
         if ($stmt1) {
-            
-            
+
+
             echo "<table>";
             echo "  <thead>";
             echo "    <tr><th>Your Games</th><th></th><th></th><th></th><th></th><th></th><th></th></tr>";
@@ -61,14 +61,16 @@
                     echo "<td>N/A</td>";
                 }
 
-                echo "<td><a href=#>Remove</a></td>";
+								if($row['endDate']){
+                	echo "<td><a href='subscriptionDelete.php?id=".urlencode($row["orderID"])."'>Cancel Subscription</a></td>";
+								}
 
                 echo "</tr>";
             }
             echo "  </tbody>";
             echo "</table>";
         }
-        
+
         echo "</center>";
         echo "</div>";
 
@@ -82,8 +84,8 @@
         echo "<h2>Purchase Games</h2>";
 
         if ($stmt2) {
-            
-            
+
+
             echo "<table>";
             echo "  <thead>";
             echo "    <tr><th>Purchasable Games</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>";
@@ -120,7 +122,7 @@
         echo "<form action=editAccount.php>";
         echo "<input type=submit class='button tiny round' value='Edit Account Info' />";
         echo "</form>";
-        
+
         echo "</center>";
         echo "</div>";
 
