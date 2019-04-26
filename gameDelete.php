@@ -24,17 +24,7 @@ $_SESSION["message"] = $_GET["id"];
       $_SESSION["message"] = "Deleted game_platform";
     }
 
-/*
-    $query2 = "DELETE FROM game WHERE gameID = ?";
-    $stmt2 = $mysqli->prepare($query2);
-    $stmt2 -> execute([$id]);
 
-    if($stmt){+-
-      $_SESSION["message"] = "Deleted game";
-    }else{
-      $_SESSION["message"] = "Could not delete game";
-    }
-*/
 
   }
 

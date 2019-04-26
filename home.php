@@ -1,6 +1,6 @@
 <?php
 
-require_once("session.php"); 
+require_once("session.php");
 require_once("included_functions.php");
 require_once("database.php");
 

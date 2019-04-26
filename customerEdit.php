@@ -11,7 +11,7 @@
 		echo $output;
 	}
 
-echo $_GET["id"];
+
 	echo "<h3>Edit Your Account</h3>";
 	echo "<div class='row'>";
 	echo "<label for='left-label' class='left inline'>";
@@ -39,7 +39,7 @@ echo $_GET["id"];
 
 
 
-		//redirect("adminView.php");
+		redirect("customerView.php");
 
 	}else {
 
