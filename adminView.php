@@ -43,7 +43,7 @@
             }else{
                 echo "<td>N/A</td>";
             }
-            echo "<td><a href=>Edit</a></td>";
+            echo "<td><a href='gameEdit.php?id=".urlencode($row["gameID"])."'>Edit</a></td>";
             echo "<td><a href='gameDelete.php?id=".urlencode($row["gameID"])."'>Delete</a></td>";
 
             echo "</tr>";
