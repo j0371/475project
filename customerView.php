@@ -42,8 +42,8 @@
 
             echo "<table>";
             echo "  <thead>";
-            echo "    <tr><th>Your Games</th><th></th><th></th><th></th><th></th><th></th><th></th></tr>";
-            echo "     <tr><th>Name</th><th>Developer</th><th>Genre</th><th>Multiplayer</th><th>Subscription Start</th><th>Subscription End</th><th></th>";
+            echo "    <tr><th>Your Games</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>";
+            echo "     <tr><th>Name</th><th>Developer</th><th>Genre</th><th>Multiplayer</th><th>Subscription Start</th><th>Subscription End</th><th></th><th></th>";
             echo "  </thead>";
             echo "  <tbody>";
 
@@ -68,6 +68,7 @@
 
 								if($row['endDate']){
                 	echo "<td><a href='subscriptionDelete.php?id=".urlencode($row["orderID"])."'>Cancel Subscription</a></td>";
+									echo "<td><a href='subscriptionextend.php?id=".urlencode($row["orderID"])."'>Extend Subscription (1 Month)</a></td>";
 								}
 
                 echo "</tr>";
