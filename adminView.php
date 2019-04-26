@@ -80,7 +80,6 @@
 							echo "<td>".$row['email']."</td>";
 							echo "<td>".$row['name']."</td>";
 							echo "<td>".$row['address']."</td>";
-							echo "<td><a href=>Edit</a></td>";
 							echo "<td><a href='customerDelete.php?id=".urlencode($row["customerID"])."'>Delete</a></td>";
 
 							echo "</tr>";
