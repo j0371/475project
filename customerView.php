@@ -11,17 +11,22 @@
 	$mysqli = Database::dbConnect();
 	$mysqli -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+
+
 	if (($output = message()) !== null) {
 		echo $output;
     }
 
-    $query0 = "SELECT name FROM customer WHERE email=?";
+    $query0 = "SELECT customerID, name FROM customer WHERE email=?";
     $stmt0 = $mysqli->prepare($query0);
     $stmt0->execute([$_SESSION['Email']]);
 
+
+		$row0 = $stmt0->fetch(PDO::FETCH_ASSOC);
+
     if($stmt0->rowCount() !== 0){
 
-        $accName = $stmt0->fetch(PDO::FETCH_ASSOC)['name'];
+
 
         $query1 = "SELECT * FROM customer JOIN cOrder USING (CustomerID) JOIN order_game USING (orderID) JOIN game USING (gameID) WHERE email=? ORDER BY game.name ASC";
 
@@ -30,7 +35,7 @@
 
         echo "<div class='row'>";
         echo "<center>";
-        echo "<h2>Game Purchases for ".$accName."</h2>";
+        echo "<h2>Game Purchases for ".$row0["name"]."</h2>";
 
         if ($stmt1) {
 
@@ -84,8 +89,6 @@
         echo "<h2>Purchase Games</h2>";
 
         if ($stmt2) {
-
-
             echo "<table>";
             echo "  <thead>";
             echo "    <tr><th>Purchasable Games</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>";
@@ -119,7 +122,8 @@
             echo "</table>";
         }
 
-        echo "<form action=editAccount.php>";
+        echo "<form method='POST' action='customerEdit.php'>";//!!!!!!!
+				echo "<input type=hidden name='id' value=".$row0['customerID']." >";
         echo "<input type=submit class='button tiny round' value='Edit Account Info' />";
         echo "</form>";
 
