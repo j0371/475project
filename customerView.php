@@ -68,7 +68,7 @@
 
 								if($row['endDate']){
                 	echo "<td><a href='subscriptionDelete.php?id=".urlencode($row["orderID"])."'>Cancel Subscription</a></td>";
-									echo "<td><a href='subscriptionextend.php?id=".urlencode($row["orderID"])."'>Extend Subscription (1 Month)</a></td>";
+									echo "<td><a href='subscriptionExtend.php?id=".urlencode($row["orderID"])."'>Extend Subscription (1 Month)</a></td>";
 								}
 
                 echo "</tr>";
