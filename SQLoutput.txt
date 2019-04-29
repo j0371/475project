@@ -1,0 +1,72 @@
+
+executed SQL:
+SELECT genre, FORMAT(AVG(price), 2) AS AVERAGE
+FROM game join game_platform using (gameID)
+WHERE platformID = (SELECT platformID FROM platform WHERE name = "Windows")
+GROUP BY genre
+ORDER BY AVERAGE ASC;
+
++-----------+---------+
+| genre     | AVERAGE |
++-----------+---------+
+| Action    | 10.00   |
+| MMORPG    | 10.00   |
+| Racing    | 22.49   |
+| Adventure | 49.99   |
++-----------+---------+
+4 rows in set (0.00 sec)
+
+-------------------------------------------------------------------------------------------------
+
+executed SQL:
+SELECT platform.name AS 'Platform Name', GROUP_CONCAT(game.name) as 'Game Name'
+FROM game JOIN game_platform USING (gameID) JOIN platform USING (platformID)
+GROUP BY platform.name;
+
++---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
+| Platform Name | Game Name                                                                                                                                       |
++---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
+| Linux         | Rocket League,Descenders                                                                                                                        |
+| Mac           | Rocket League,World of Warcraft,Elder Scrolls Online,Descenders                                                                                 |
+| Windows       | Rocket League,The Elder Scrolls V: Skyrim,Sekiro: Shadows Die Twice,Apex Legends,World of Warcraft,Elder Scrolls Online,Descenders,No Man's Sky |
++---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
+3 rows in set (0.00 sec)
+
+-------------------------------------------------------------------------------------------------
+
+executed SQL:
+select platformID
+from game_platform
+where gameID = (
+  select gameID
+  from game
+  where gameID = 1
+);
+
++------------+
+| platformID |
++------------+
+|          1 |
+|          2 |
+|          3 |
++------------+
+3 rows in set (0.00 sec)
+
+-------------------------------------------------------------------------------------------------
+
+executed SQL:
+select platform.name Name, group_concat(distinct game.genre) Genre
+from platform
+natural join game_platform
+natual join game
+where multiplayer = True
+group by platform.name;
+
++---------+--------------------------------+
+| Name    | Genre                          |
++---------+--------------------------------+
+| Linux   | MMORPG,Racing,Action,Adventure |
+| Mac     | MMORPG,Racing,Action,Adventure |
+| Windows | Racing,MMORPG,Action,Adventure |
++---------+--------------------------------+
+3 rows in set (0.00 sec)
