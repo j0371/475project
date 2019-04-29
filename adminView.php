@@ -10,7 +10,7 @@
 	if (($output = message()) !== null) {
 		echo $output;
 	}
-
+/////////////////////////////////////////////////////////////////////////////////////////////
 	$query = "SELECT gameID, game.name as gName, developer, genre, multiplayer, price, monthly_price, GROUP_CONCAT(platform.name) as platformNames FROM game JOIN game_platform USING (gameID) JOIN platform USING (platformID) GROUP BY game.name ORDER BY game.name ASC";
 
 	$stmt = $mysqli->prepare($query);
@@ -43,7 +43,7 @@
             }else{
                 echo "<td>N/A</td>";
             }
-            echo "<td><a href=>Edit</a></td>";
+            echo "<td><a href='gameEdit.php?id=".urlencode($row["gameID"])."'>Edit</a></td>";
             echo "<td><a href='gameDelete.php?id=".urlencode($row["gameID"])."'>Delete</a></td>";
 
             echo "</tr>";
@@ -57,6 +57,43 @@
     }
 
     echo "<br /><p>&laquo:<a href='home.php'>Back to Main Page</a>";
+		//////////////////////////////////////////////////////////////////////////
+		//View Customers
+		$query = "SELECT customerID, email, name, address FROM customer";
+
+		$stmt = $mysqli->prepare($query);
+		$stmt->execute();
+
+		if ($stmt) {
+			echo "<div class='row'>";
+			echo "<center>";
+			echo "<h2>Customers</h2>";
+			echo "<table>";
+			echo "  <thead>";
+			echo "    <tr><th>Customer ID</th><th>Email</th><th>Name</th><th>Address</th><th></th><th></th>";
+			echo "  </thead>";
+			echo "  <tbody>";
+			while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+							echo "<tr>";
+
+							echo "<td>".$row['customerID']."</td>";
+							echo "<td>".$row['email']."</td>";
+							echo "<td>".$row['name']."</td>";
+							echo "<td>".$row['address']."</td>";
+							echo "<td><a href='customerDelete.php?id=".urlencode($row["customerID"])."'>Delete</a></td>";
+
+							echo "</tr>";
+					}
+			echo "  </tbody>";
+			echo "</table>";
+					echo "<br /><br />";
+					echo "<form action=customerCreate.php><input type=submit value='Add Customer' class='button tiny round' /></form>";
+			echo "</center>";
+			echo "</div>";
+			}
+
+			echo "<br /><p>&laquo:<a href='home.php'>Back to Main Page</a>";
+		//////////////////////////////////////////////////////////////////////////
 
 	Database::dbDisconnect();
  ?>

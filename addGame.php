@@ -19,37 +19,44 @@
 	if (isset($_POST["submit"])) {
 		if( (isset($_POST["Name"]) && $_POST["Name"] !== "") && (isset($_POST["Developer"]) && $_POST["Developer"] !== "") &&(isset($_POST["Genre"]) && $_POST["Genre"] !== "") &&(isset($_POST["Multiplayer"]) && $_POST["Multiplayer"] !== "") &&(isset($_POST["Price"]) && $_POST["Price"] !== "")) {
 
-					$query = "INSERT INTO game(`name`, developer, genre, multiplayer, price, monthly_price) VALUES(?,?,?,?,?,?)";
+					if($_POST['windows'] || $_POST['mac'] || $_POST['linux'] ){
 
-                    $stmt = $mysqli->prepare($query);
+						$query = "INSERT INTO game(`name`, developer, genre, multiplayer, price, monthly_price) VALUES(?,?,?,?,?,?)";
 
-                    if($_POST['mPrice'] == ""){
-					    $stmt -> execute([$_POST['Name'], $_POST['Developer'], $_POST['Genre'], $_POST['Multiplayer'], $_POST['Price'], NULL]);
-                    }else{
-                        $stmt -> execute([$_POST['Name'], $_POST['Developer'], $_POST['Genre'], $_POST['Multiplayer'], $_POST['Price'], $_POST['mPrice']]);
-                    }
+						$stmt = $mysqli->prepare($query);
 
-                    if($_POST['windows']){
-                        $query1 = "INSERT INTO game_platform(gameID, platformID) VALUES((SELECT MAX(gameID) FROM game), (SELECT platformID FROM platform WHERE `name` = 'windows'))";
-                        $stmt1 = $mysqli->prepare($query1);
-                        $stmt1->execute();
-                    }if($_POST['mac']){
-                        $query1 = "INSERT INTO game_platform(gameID, platformID) VALUES((SELECT MAX(gameID) FROM game), (SELECT platformID FROM platform WHERE `name` = 'mac'))";
-                        $stmt1 = $mysqli->prepare($query1);
-                        $stmt1->execute();
-                    }if($_POST['linux']){
-                        $query1 = "INSERT INTO game_platform(gameID, platformID) VALUES((SELECT MAX(gameID) FROM game), (SELECT platformID FROM platform WHERE `name` = 'linux'))";
-                        $stmt1 = $mysqli->prepare($query1);
-                        $stmt1->execute();
-                    }
-                    
-					if($stmt){
-						$_SESSION['message'] = $_POST['Name']." has been added";
+						if($_POST['mPrice'] == ""){
+							$stmt -> execute([$_POST['Name'], $_POST['Developer'], $_POST['Genre'], $_POST['Multiplayer'], $_POST['Price'], NULL]);
+						}else{
+							$stmt -> execute([$_POST['Name'], $_POST['Developer'], $_POST['Genre'], $_POST['Multiplayer'], $_POST['Price'], $_POST['mPrice']]);
+						}
+
+						if($_POST['windows']){
+							$query1 = "INSERT INTO game_platform(gameID, platformID) VALUES((SELECT MAX(gameID) FROM game), (SELECT platformID FROM platform WHERE `name` = 'windows'))";
+							$stmt1 = $mysqli->prepare($query1);
+							$stmt1->execute();
+						}if($_POST['mac']){
+							$query1 = "INSERT INTO game_platform(gameID, platformID) VALUES((SELECT MAX(gameID) FROM game), (SELECT platformID FROM platform WHERE `name` = 'mac'))";
+							$stmt1 = $mysqli->prepare($query1);
+							$stmt1->execute();
+						}if($_POST['linux']){
+							$query1 = "INSERT INTO game_platform(gameID, platformID) VALUES((SELECT MAX(gameID) FROM game), (SELECT platformID FROM platform WHERE `name` = 'linux'))";
+							$stmt1 = $mysqli->prepare($query1);
+							$stmt1->execute();
+						}
+						
+						if($stmt){
+							$_SESSION['message'] = $_POST['Name']." has been added";
+						}else{
+							$_SESSION['message'] = "Error! Could not add game";
+						}
+
+						redirect("adminView.php");
+
 					}else{
-						$_SESSION['message'] = "Error! Could not add game";
+						$_SESSION["message"] = "Unable to add game. Select at least one platform";
+						redirect("addGame.php");
 					}
-
-					redirect("adminView.php");
 
 		}
 		else {

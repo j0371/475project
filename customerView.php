@@ -1,5 +1,5 @@
-<?php 
-	require_once("session.php"); 
+<?php
+	require_once("session.php");
 	require_once("included_functions.php");
     require_once("database.php");
 
@@ -7,22 +7,27 @@
         $_SESSION['Email'] = $_POST['Email'];
     }
 
-	new_header("Online Game Store"); 
+	new_header("Online Game Store");
 	$mysqli = Database::dbConnect();
 	$mysqli -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+
 
 	if (($output = message()) !== null) {
 		echo $output;
     }
 
-    $query0 = "SELECT name FROM customer WHERE email=?";
+    $query0 = "SELECT customerID, name FROM customer WHERE email=?";
     $stmt0 = $mysqli->prepare($query0);
     $stmt0->execute([$_SESSION['Email']]);
-    
+
+
+		$row0 = $stmt0->fetch(PDO::FETCH_ASSOC);
+
     if($stmt0->rowCount() !== 0){
 
-        $accName = $stmt0->fetch(PDO::FETCH_ASSOC)['name'];
-    
+
+
         $query1 = "SELECT * FROM customer JOIN cOrder USING (CustomerID) JOIN order_game USING (orderID) JOIN game USING (gameID) WHERE email=? ORDER BY game.name ASC";
 
         $stmt1 = $mysqli->prepare($query1);
@@ -30,15 +35,15 @@
 
         echo "<div class='row'>";
         echo "<center>";
-        echo "<h2>Game Purchases for ".$accName."</h2>";
+        echo "<h2>Game Purchases for ".$row0["name"]."</h2>";
 
         if ($stmt1) {
-            
-            
+
+
             echo "<table>";
             echo "  <thead>";
-            echo "    <tr><th>Your Games</th><th></th><th></th><th></th><th></th><th></th><th></th></tr>";
-            echo "     <tr><th>Name</th><th>Developer</th><th>Genre</th><th>Multiplayer</th><th>Subscription Start</th><th>Subscription End</th><th></th>";
+            echo "    <tr><th>Your Games</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>";
+            echo "     <tr><th>Name</th><th>Developer</th><th>Genre</th><th>Multiplayer</th><th>Subscription Start</th><th>Subscription End</th><th></th><th></th>";
             echo "  </thead>";
             echo "  <tbody>";
 
@@ -61,14 +66,17 @@
                     echo "<td>N/A</td>";
                 }
 
-                echo "<td><a href=#>Remove</a></td>";
+								if($row['endDate']){
+                	echo "<td><a href='subscriptionDelete.php?id=".urlencode($row["orderID"])."'>Cancel Subscription</a></td>";
+									echo "<td><a href='subscriptionExtend.php?id=".urlencode($row["orderID"])."'>Extend Subscription (1 Month)</a></td>";
+								}
 
                 echo "</tr>";
             }
             echo "  </tbody>";
             echo "</table>";
         }
-        
+
         echo "</center>";
         echo "</div>";
 
@@ -82,8 +90,6 @@
         echo "<h2>Purchase Games</h2>";
 
         if ($stmt2) {
-            
-            
             echo "<table>";
             echo "  <thead>";
             echo "    <tr><th>Purchasable Games</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>";
@@ -117,10 +123,11 @@
             echo "</table>";
         }
 
-        echo "<form action=editAccount.php>";
+        echo "<form method='POST' action='customerEdit.php'>";//!!!!!!!
+				echo "<input type=hidden name='id' value=".$row0['customerID']." >";
         echo "<input type=submit class='button tiny round' value='Edit Account Info' />";
         echo "</form>";
-        
+
         echo "</center>";
         echo "</div>";
 
